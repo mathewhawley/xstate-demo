@@ -6,7 +6,11 @@ type Props = {
 };
 
 function Button(props: Props) {
-  return <button onClick={props.onClick}>{props.children}</button>;
+  return (
+    <a href="#0" className="f6 link dim br1 ba ph3 pv2 dib dark-blue" onClick={props.onClick}>
+      {props.children}
+    </a>
+  );
 }
 
 export default Button;

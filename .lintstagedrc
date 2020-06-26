@@ -1,4 +1,5 @@
 {
   "*.{ts,tsx,js,jsx}": ["prettier --write", "git add"],
-  "*.json": ["prettier --write --parser json", "git add"]
+  "*.json": ["prettier --write --parser json", "git add"],
+  "*.scss": ["prettier --write", "git add"]
 }
