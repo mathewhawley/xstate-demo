@@ -5,7 +5,13 @@ import Button from 'components/Button';
 
 function App() {
   const [state, send] = useMachine(feedbackMachine);
-  return <>{state.matches('idle') && <Button onClick={() => send('OPEN')}>Open</Button>}</>;
+  return (
+    <>
+      <Button variant="standard" onClick={() => send('OPEN')}>
+        Open
+      </Button>
+    </>
+  );
 }
 
 export default App;
