@@ -20,7 +20,11 @@ function App() {
   return (
     <Layout>
       <div className="mv3">
-        <Modal isOpen={state.matches('active')} trigger={modalTrigger}>
+        <Modal
+          onClose={() => send('CLOSE')}
+          isOpen={state.matches('active')}
+          trigger={modalTrigger}
+        >
           <ModalHeader />
           <ModalBody />
           <ModalFooter />

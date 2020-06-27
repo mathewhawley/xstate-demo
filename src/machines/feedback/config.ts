@@ -34,6 +34,7 @@ const config: MachineConfig<FeedbackContext, FeedbackSchema, FeedbackEvent> = {
     },
     active: {
       on: {
+        CLOSE: 'idle',
         CLICK_GOOD: 'thanks',
         CLICK_BAD: 'feedback',
       },

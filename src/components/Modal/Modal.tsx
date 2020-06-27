@@ -7,8 +7,8 @@ const PORTAL_ID = 'modal';
 type Props = {
   trigger: React.ReactElement;
   children?: React.ReactNode;
+  onClose: () => void;
   isOpen?: boolean;
-  onClose?: () => void;
   onOpen?: () => void;
 };
 
@@ -24,6 +24,7 @@ function Modal(props: Props) {
   const overlay = (
     <div
       className="fixed top-0 left-0 right-0 bottom-0 o-70 bg-black"
+      onClick={() => props.onClose()}
       data-testid="modal-overlay"
     />
   );

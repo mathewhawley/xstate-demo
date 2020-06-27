@@ -9,23 +9,29 @@ import type { FeedbackSchema, FeedbackEvent, FeedbackContext } from 'machines/fe
 const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
   id: 'feedback',
   initial: 'idle',
+  context: {
+    input: null,
+  },
   states: {
     idle: {
       on: {
         OPEN: 'active',
       },
       meta: {
-        test: ({ getByTestId }: RenderResult) => {
-          expect(getByTestId('modal-trigger')).toHaveTextContent('Open');
+        test: ({ queryByTestId }: RenderResult) => {
+          expect(queryByTestId('modal-trigger')).toHaveTextContent('Open');
+          expect(queryByTestId('modal-overlay')).not.toBeInTheDocument();
         },
       },
     },
     active: {
+      on: {
+        CLOSE: 'idle',
+      },
       meta: {
         test: () => {
-          // @ts-ignore
-          const { getByTestId } = within(document.getElementById('modal'));
-          expect(getByTestId('modal-overlay')).toBeInTheDocument();
+          const { queryByTestId } = within(document.getElementById('modal')!);
+          expect(queryByTestId('modal-overlay')).toBeInTheDocument();
         },
       },
     },
@@ -37,6 +43,9 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
 const testModel = createModel<RenderResult>(testMachine).withEvents({
   OPEN: ({ getByTestId }) => {
     fireEvent.click(getByTestId('modal-trigger'));
+  },
+  CLOSE: ({ getByTestId }) => {
+    fireEvent.click(getByTestId('modal-overlay'));
   },
 });
 
