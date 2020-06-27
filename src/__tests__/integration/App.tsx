@@ -19,24 +19,49 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
       },
       meta: {
         test: ({ queryByTestId }: RenderResult) => {
-          expect(queryByTestId('modal-trigger')).toHaveTextContent('Open');
+          expect(queryByTestId('modal-trigger')).toBeInTheDocument();
           expect(queryByTestId('modal-overlay')).not.toBeInTheDocument();
         },
       },
     },
     active: {
+      id: 'active',
+      initial: 'prompt',
+      states: {
+        prompt: {
+          on: {
+            CLICK_GOOD: 'thanks',
+          },
+          meta: {
+            test: () => {
+              const { queryByTestId } = within(document.getElementById('modal')!);
+              expect(queryByTestId('modal-overlay')).toBeInTheDocument();
+              expect(queryByTestId('modal-panel')).toBeInTheDocument();
+              expect(queryByTestId('modal-heading-copy')).toHaveTextContent(
+                'How was your experience?'
+              );
+              expect(queryByTestId('modal-btn-bad')).toBeInTheDocument();
+              expect(queryByTestId('modal-btn-good')).toBeInTheDocument();
+            },
+          },
+        },
+        thanks: {
+          meta: {
+            test: () => {
+              const { queryByTestId } = within(document.getElementById('modal')!);
+              expect(queryByTestId('modal-overlay')).toBeInTheDocument();
+              expect(queryByTestId('modal-panel')).toBeInTheDocument();
+              expect(queryByTestId('modal-heading-copy')).toHaveTextContent(
+                'Thanks for participating!'
+              );
+            },
+          },
+        },
+      },
       on: {
         CLOSE: 'idle',
       },
-      meta: {
-        test: () => {
-          const { queryByTestId } = within(document.getElementById('modal')!);
-          expect(queryByTestId('modal-overlay')).toBeInTheDocument();
-        },
-      },
     },
-    feedback: {},
-    thanks: {},
   },
 });
 
@@ -47,6 +72,9 @@ const testModel = createModel<RenderResult>(testMachine).withEvents({
   CLOSE: ({ getByTestId }) => {
     fireEvent.click(getByTestId('modal-overlay'));
   },
+  CLICK_GOOD: ({ getByTestId }) => {
+    fireEvent.click(getByTestId('modal-btn-good'));
+  },
 });
 
 const testPlans = testModel.getSimplePathPlans();
@@ -55,13 +83,13 @@ testPlans.forEach((plan) => {
   describe(plan.description, () => {
     let portalRoot: HTMLDivElement;
 
-    beforeEach(() => {
+    beforeAll(() => {
       portalRoot = document.createElement('div');
       portalRoot.setAttribute('id', 'modal');
       document.body.appendChild(portalRoot);
     });
 
-    afterEach(() => {
+    afterAll(() => {
       document.body.removeChild(portalRoot);
       cleanup();
     });

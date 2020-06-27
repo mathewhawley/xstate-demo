@@ -1,21 +1,34 @@
 import React from 'react';
 import cn from 'classnames';
 
-const styleBase = 'bn dim br2 pv2 ph3 f6';
-const styleStd = 'white bg-purple';
+const styleBase = 'bg-animate bn br2 f5';
+const stylePrimary = 'white bg-blue hover-bg-dark-blue';
+const styleStd = 'bg-white hover-bg-black-10 blue';
+const styleNew = 'white bg-green hover-bg-dark-green';
+const styleError = 'white bg-red hover-bg-dark-red';
+const styleSizeStd = 'pv2 ph3';
+const styleSizeLrg = 'pv3 ph4';
 const styleFullWidth = 'w-100';
 
 type Props = {
   children: React.ReactNode;
-  variant: 'standard';
+  variant: 'standard' | 'primary' | 'error' | 'new';
+  size?: 'standard' | 'large';
   onClick: React.EventHandler<React.MouseEvent>;
   fullWidth?: boolean;
   qaHook?: string;
 };
 
 function Button(props: Props) {
+  const size = props.size || 'standard';
+
   const styles = cn(styleBase, {
     [styleStd]: props.variant === 'standard',
+    [stylePrimary]: props.variant === 'primary',
+    [styleError]: props.variant === 'error',
+    [styleNew]: props.variant === 'new',
+    [styleSizeStd]: size === 'standard',
+    [styleSizeLrg]: size === 'large',
     [styleFullWidth]: props.fullWidth,
   });
 

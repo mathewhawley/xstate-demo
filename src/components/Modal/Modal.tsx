@@ -64,7 +64,7 @@ type HeaderProps = {
 
 export function ModalHeader(props: HeaderProps) {
   return (
-    <div className="bb b--black-10 pa4" data-testid="modal-header">
+    <div className="bb b--black-10 ph3 pv4" data-testid="modal-header">
       {props.children}
     </div>
   );
@@ -76,7 +76,7 @@ type BodyProps = {
 
 export function ModalBody(props: BodyProps) {
   return (
-    <div className="flex-auto pa4" data-testid="modal-body">
+    <div className="flex-auto pa3" data-testid="modal-body">
       {props.children}
     </div>
   );
@@ -88,7 +88,7 @@ type FooterProps = {
 
 export function ModalFooter(props: FooterProps) {
   return (
-    <div className="bt b--black-10 pa4" data-testid="modal-footer">
+    <div className="bt b--black-10 pa3" data-testid="modal-footer">
       {props.children}
     </div>
   );
