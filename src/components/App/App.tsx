@@ -4,19 +4,27 @@ import feedbackMachine from 'machines/feedback';
 import useDebugGrid from 'hooks/useDebugGrid';
 import Layout from 'components/Layout';
 import Button from 'components/Button';
+import Modal, { ModalHeader, ModalFooter, ModalBody } from 'components/Modal';
 
 function App() {
   useDebugGrid();
 
-  // @ts-ignore
   const [state, send] = useMachine(feedbackMachine);
+
+  const modalTrigger = (
+    <Button variant="standard" onClick={() => send('OPEN')}>
+      Open
+    </Button>
+  );
 
   return (
     <Layout>
       <div className="mv3">
-        <Button variant="standard" onClick={() => send('OPEN')}>
-          Open
-        </Button>
+        <Modal isOpen trigger={modalTrigger}>
+          <ModalHeader />
+          <ModalBody />
+          <ModalFooter />
+        </Modal>
       </div>
     </Layout>
   );
