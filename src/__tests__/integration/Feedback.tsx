@@ -27,11 +27,14 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
     opened: {
       id: 'opened',
       initial: 'prompt',
+      on: {
+        OVERLAY: 'closed',
+      },
       states: {
         prompt: {
           on: {
-            CLICK_GOOD: 'thanks',
-            CLICK_BAD: 'feedback',
+            GOOD: 'thanks',
+            BAD: 'feedback',
           },
           meta: {
             test: () => {
@@ -62,9 +65,6 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
           },
         },
       },
-      on: {
-        CLOSE: 'closed',
-      },
       meta: {
         test: () => {
           const { queryByTestId } = within(document.getElementById('modal')!);
@@ -80,13 +80,13 @@ const testModel = createModel<RenderResult>(testMachine).withEvents({
   OPEN: ({ getByTestId }) => {
     fireEvent.click(getByTestId('modal-trigger'));
   },
-  CLOSE: ({ getByTestId }) => {
+  OVERLAY: ({ getByTestId }) => {
     fireEvent.click(getByTestId('modal-overlay'));
   },
-  CLICK_GOOD: ({ getByTestId }) => {
+  GOOD: ({ getByTestId }) => {
     fireEvent.click(getByTestId('modal-btn-good'));
   },
-  CLICK_BAD: ({ getByTestId }) => {
+  BAD: ({ getByTestId }) => {
     fireEvent.click(getByTestId('modal-btn-bad'));
   },
 });

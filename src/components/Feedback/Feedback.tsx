@@ -28,10 +28,15 @@ function Feedback() {
   })();
 
   return (
-    <Modal onClose={() => send('CLOSE')} isOpen={state.matches('opened')} trigger={modalTrigger}>
+    <Modal
+      onClickOverlay={() => send('OVERLAY')}
+      isOpen={state.matches('opened')}
+      trigger={modalTrigger}
+    >
       <ModalHeader>
         <h2 className="ma0 fw4 lh-solid f4">{modalHeading}</h2>
       </ModalHeader>
+
       <ModalBody>
         {state.matches({ opened: 'prompt' }) && (
           <p className="ma0 lh-copy measure center">
@@ -48,40 +53,45 @@ function Feedback() {
           </p>
         )}
       </ModalBody>
+
       <ModalFooter>
         {state.matches({ opened: 'prompt' }) && (
           <div className="mw5-ns center">
             <div className="fl w-50 pr2">
-              <Button
-                fullWidth
-                variant="error"
-                onClick={() => send('CLICK_BAD')}
-                qaHook="modal-btn-bad"
-              >
+              <Button fullWidth variant="error" onClick={() => send('BAD')} qaHook="modal-btn-bad">
                 Bad
               </Button>
             </div>
             <div className="fl w-50 pl2">
-              <Button
-                fullWidth
-                variant="new"
-                onClick={() => send('CLICK_GOOD')}
-                qaHook="modal-btn-good"
-              >
+              <Button fullWidth variant="new" onClick={() => send('GOOD')} qaHook="modal-btn-good">
                 Good
               </Button>
             </div>
           </div>
         )}
+
         {state.matches({ opened: 'thanks' }) && (
           <div className="mw4-ns center">
             <Button
               fullWidth
               variant="primary"
               onClick={() => send('CLOSE')}
-              qaHook="modal-btn-bad"
+              qaHook="modal-btn-done"
             >
               Done
+            </Button>
+          </div>
+        )}
+
+        {state.matches({ opened: 'feedback' }) && (
+          <div className="mw4-ns center">
+            <Button
+              fullWidth
+              variant="primary"
+              onClick={() => send('SUBMIT')}
+              qaHook="modal-btn-submit"
+            >
+              Submit
             </Button>
           </div>
         )}

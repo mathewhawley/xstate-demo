@@ -20,9 +20,11 @@ type FeedbackContext = {
 type FeedbackEvent =
   | { type: 'OPEN' }
   | { type: 'CLOSE' }
+  | { type: 'OVERLAY' }
+  | { type: 'DONE' }
   | { type: 'SUBMIT' }
-  | { type: 'CLICK_GOOD' }
-  | { type: 'CLICK_BAD' };
+  | { type: 'GOOD' }
+  | { type: 'BAD' };
 
 const config: MachineConfig<FeedbackContext, FeedbackSchema, FeedbackEvent> = {
   id: 'feedback',
@@ -39,18 +41,18 @@ const config: MachineConfig<FeedbackContext, FeedbackSchema, FeedbackEvent> = {
     opened: {
       id: 'opened',
       initial: 'prompt',
+      on: {
+        OVERLAY: 'closed',
+      },
       states: {
         prompt: {
           on: {
-            CLICK_GOOD: 'thanks',
-            CLICK_BAD: 'feedback',
+            GOOD: 'thanks',
+            BAD: 'feedback',
           },
         },
         thanks: {},
         feedback: {},
-      },
-      on: {
-        CLOSE: 'closed',
       },
     },
   },
