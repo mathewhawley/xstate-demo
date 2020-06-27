@@ -8,14 +8,14 @@ import type { FeedbackSchema, FeedbackEvent, FeedbackContext } from 'machines/fe
 
 const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
   id: 'feedback',
-  initial: 'idle',
+  initial: 'closed',
   context: {
     input: null,
   },
   states: {
-    idle: {
+    closed: {
       on: {
-        OPEN: 'active',
+        OPEN: 'opened',
       },
       meta: {
         test: ({ queryByTestId }: RenderResult) => {
@@ -24,8 +24,8 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
         },
       },
     },
-    active: {
-      id: 'active',
+    opened: {
+      id: 'opened',
       initial: 'prompt',
       states: {
         prompt: {
@@ -40,6 +40,7 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
               expect(queryByTestId('modal-heading-copy')).toHaveTextContent(
                 'How was your experience?'
               );
+              expect(queryByTestId('modal-body-copy')).toBeInTheDocument();
               expect(queryByTestId('modal-btn-bad')).toBeInTheDocument();
               expect(queryByTestId('modal-btn-good')).toBeInTheDocument();
             },
@@ -59,7 +60,7 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
         },
       },
       on: {
-        CLOSE: 'idle',
+        CLOSE: 'closed',
       },
     },
   },

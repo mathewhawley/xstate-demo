@@ -17,27 +17,39 @@ function App() {
     </Button>
   );
 
+  const modalHeading = (() => {
+    switch (true) {
+      case state.matches({ opened: 'prompt' }): {
+        return 'How was your experience?';
+      }
+      case state.matches({ opened: 'thanks' }): {
+        return 'Thanks for participating!';
+      }
+    }
+  })();
+
   return (
     <Layout>
       <div className="mv3">
         <Modal
           onClose={() => send('CLOSE')}
-          isOpen={state.matches('active')}
+          isOpen={state.matches('opened')}
           trigger={modalTrigger}
         >
           <ModalHeader>
             <h2 className="ma0 fw4 lh-solid f4" data-testid="modal-heading-copy">
-              {state.matches({ active: 'prompt' }) && 'How was your experience?'}
-              {state.matches({ active: 'thanks' }) && 'Thanks for participating!'}
+              {modalHeading}
             </h2>
           </ModalHeader>
           <ModalBody>
-            <p className="ma0 lh-copy" data-testid="modal-body-copy">
-              Donec sed magna vel dui eleifend varius eu sit amet nisl. In placerat ornare nisl, ut
-              dignissim ligula euismod quis. Etiam vestibulum purus sit amet ligula varius sodales.
-              Cras vel fermentum massa, quis scelerisque ipsum. Donec arcu felis, sodales quis
-              ligula sit amet, accumsan facilisis lacus.
-            </p>
+            {state.matches({ opened: 'prompt' }) && (
+              <p className="ma0 lh-copy" data-testid="modal-body-copy">
+                Donec sed magna vel dui eleifend varius eu sit amet nisl. In placerat ornare nisl,
+                ut dignissim ligula euismod quis. Etiam vestibulum purus sit amet ligula varius
+                sodales. Cras vel fermentum massa, quis scelerisque ipsum. Donec arcu felis, sodales
+                quis ligula sit amet, accumsan facilisis lacus.
+              </p>
+            )}
           </ModalBody>
           <ModalFooter>
             <div className="mw5-ns center">

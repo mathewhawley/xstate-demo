@@ -2,8 +2,8 @@ import { MachineConfig } from 'xstate';
 
 type FeedbackSchema = {
   states: {
-    idle: {};
-    active: {
+    closed: {};
+    opened: {
       states: {
         prompt: {};
         thanks: {};
@@ -25,17 +25,17 @@ type FeedbackEvent =
 
 const config: MachineConfig<FeedbackContext, FeedbackSchema, FeedbackEvent> = {
   id: 'feedback',
-  initial: 'idle',
+  initial: 'closed',
   context: {
     input: null,
   },
   states: {
-    idle: {
+    closed: {
       on: {
-        OPEN: 'active',
+        OPEN: 'opened',
       },
     },
-    active: {
+    opened: {
       initial: 'prompt',
       states: {
         prompt: {
@@ -46,7 +46,7 @@ const config: MachineConfig<FeedbackContext, FeedbackSchema, FeedbackEvent> = {
         thanks: {},
       },
       on: {
-        CLOSE: 'idle',
+        CLOSE: 'closed',
       },
     },
   },
