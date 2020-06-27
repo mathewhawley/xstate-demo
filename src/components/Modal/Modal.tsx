@@ -30,8 +30,13 @@ function Modal(props: Props) {
   );
 
   const panel = (
-    <div className="u-center-abs w-third mw7 fixed bg-white br1 shadow-1" data-testid="modal-panel">
-      {props.children}
+    <div className="u-center-abs h-100 h-auto-ns w-100 pa3-ns mw7 fixed">
+      <div
+        className="br1-ns flex flex-column bg-white h-100 w-100 shadow-1"
+        data-testid="modal-panel"
+      >
+        {props.children}
+      </div>
     </div>
   );
 
@@ -71,7 +76,7 @@ type BodyProps = {
 
 export function ModalBody(props: BodyProps) {
   return (
-    <div className="pa4" data-testid="modal-body">
+    <div className="flex-auto pa4" data-testid="modal-body">
       {props.children}
     </div>
   );
