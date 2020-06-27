@@ -3,7 +3,7 @@ import { MachineConfig } from 'xstate';
 type FeedbackSchema = {
   states: {
     idle: {};
-    prompt: {};
+    active: {};
     feedback: {};
     thanks: {};
   };
@@ -16,17 +16,38 @@ type FeedbackContext = {
 type FeedbackEvent =
   | { type: 'OPEN' }
   | { type: 'CLOSE' }
+  | { type: 'SUBMIT' }
   | { type: 'CLICK_GOOD' }
   | { type: 'CLICK_BAD' };
 
 const config: MachineConfig<FeedbackContext, FeedbackSchema, FeedbackEvent> = {
   id: 'feedback',
   initial: 'idle',
+  context: {
+    input: null,
+  },
   states: {
-    idle: {},
-    prompt: {},
-    feedback: {},
-    thanks: {},
+    idle: {
+      on: {
+        OPEN: 'active',
+      },
+    },
+    active: {
+      on: {
+        CLICK_GOOD: 'thanks',
+        CLICK_BAD: 'feedback',
+      },
+    },
+    feedback: {
+      on: {
+        SUBMIT: 'thanks',
+      },
+    },
+    thanks: {
+      on: {
+        CLOSE: 'idle',
+      },
+    },
   },
 };
 

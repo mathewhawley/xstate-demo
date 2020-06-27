@@ -12,7 +12,7 @@ function App() {
   const [state, send] = useMachine(feedbackMachine);
 
   const modalTrigger = (
-    <Button variant="standard" onClick={() => send('OPEN')}>
+    <Button variant="standard" onClick={() => send('OPEN')} qaHook="modal-trigger">
       Open
     </Button>
   );
@@ -20,7 +20,7 @@ function App() {
   return (
     <Layout>
       <div className="mv3">
-        <Modal isOpen trigger={modalTrigger}>
+        <Modal isOpen={state.matches('active')} trigger={modalTrigger}>
           <ModalHeader />
           <ModalBody />
           <ModalFooter />

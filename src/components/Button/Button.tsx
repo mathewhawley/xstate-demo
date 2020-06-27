@@ -8,8 +8,9 @@ const styleFullWidth = 'w-100';
 type Props = {
   children: React.ReactNode;
   variant: 'standard';
-  fullWidth?: boolean;
   onClick: React.EventHandler<React.MouseEvent>;
+  fullWidth?: boolean;
+  qaHook?: string;
 };
 
 function Button(props: Props) {
@@ -19,7 +20,7 @@ function Button(props: Props) {
   });
 
   return (
-    <button className={styles} onClick={props.onClick}>
+    <button className={styles} onClick={props.onClick} data-testid={props.qaHook}>
       {props.children}
     </button>
   );
