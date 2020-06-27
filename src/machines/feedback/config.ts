@@ -7,6 +7,7 @@ type FeedbackSchema = {
       states: {
         prompt: {};
         thanks: {};
+        feedback: {};
       };
     };
   };
@@ -36,14 +37,17 @@ const config: MachineConfig<FeedbackContext, FeedbackSchema, FeedbackEvent> = {
       },
     },
     opened: {
+      id: 'opened',
       initial: 'prompt',
       states: {
         prompt: {
           on: {
             CLICK_GOOD: 'thanks',
+            CLICK_BAD: 'feedback',
           },
         },
         thanks: {},
+        feedback: {},
       },
       on: {
         CLOSE: 'closed',

@@ -31,6 +31,7 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
         prompt: {
           on: {
             CLICK_GOOD: 'thanks',
+            CLICK_BAD: 'feedback',
           },
           meta: {
             test: () => {
@@ -47,6 +48,16 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
             test: () => {
               const { queryByText } = within(document.getElementById('modal')!);
               expect(queryByText('Thanks for participating!')).toBeInTheDocument();
+              expect(queryByText('Lorem ipsum dolor sit', { exact: false })).toBeInTheDocument();
+              expect(queryByText('Done')).toBeInTheDocument();
+            },
+          },
+        },
+        feedback: {
+          meta: {
+            test: () => {
+              const { queryByText } = within(document.getElementById('modal')!);
+              expect(queryByText('We would love to hear your feedback.')).toBeInTheDocument();
             },
           },
         },
@@ -74,6 +85,9 @@ const testModel = createModel<RenderResult>(testMachine).withEvents({
   },
   CLICK_GOOD: ({ getByTestId }) => {
     fireEvent.click(getByTestId('modal-btn-good'));
+  },
+  CLICK_BAD: ({ getByTestId }) => {
+    fireEvent.click(getByTestId('modal-btn-bad'));
   },
 });
 
