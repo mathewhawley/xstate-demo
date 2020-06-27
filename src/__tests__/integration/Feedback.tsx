@@ -34,33 +34,32 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
           },
           meta: {
             test: () => {
-              const { queryByTestId } = within(document.getElementById('modal')!);
-              expect(queryByTestId('modal-overlay')).toBeInTheDocument();
-              expect(queryByTestId('modal-panel')).toBeInTheDocument();
-              expect(queryByTestId('modal-heading-copy')).toHaveTextContent(
-                'How was your experience?'
-              );
-              expect(queryByTestId('modal-body-copy')).toBeInTheDocument();
-              expect(queryByTestId('modal-btn-bad')).toBeInTheDocument();
-              expect(queryByTestId('modal-btn-good')).toBeInTheDocument();
+              const { queryByText } = within(document.getElementById('modal')!);
+              expect(queryByText('How was your experience?')).toBeInTheDocument();
+              expect(queryByText('Donec sed magna vel dui', { exact: false })).toBeInTheDocument();
+              expect(queryByText('Bad')).toBeInTheDocument();
+              expect(queryByText('Good')).toBeInTheDocument();
             },
           },
         },
         thanks: {
           meta: {
             test: () => {
-              const { queryByTestId } = within(document.getElementById('modal')!);
-              expect(queryByTestId('modal-overlay')).toBeInTheDocument();
-              expect(queryByTestId('modal-panel')).toBeInTheDocument();
-              expect(queryByTestId('modal-heading-copy')).toHaveTextContent(
-                'Thanks for participating!'
-              );
+              const { queryByText } = within(document.getElementById('modal')!);
+              expect(queryByText('Thanks for participating!')).toBeInTheDocument();
             },
           },
         },
       },
       on: {
         CLOSE: 'closed',
+      },
+      meta: {
+        test: () => {
+          const { queryByTestId } = within(document.getElementById('modal')!);
+          expect(queryByTestId('modal-overlay')).toBeInTheDocument();
+          expect(queryByTestId('modal-panel')).toBeInTheDocument();
+        },
       },
     },
   },
@@ -105,7 +104,5 @@ testPlans.forEach((plan) => {
 });
 
 it('coverage', () => {
-  testModel.testCoverage({
-    filter: (stateNode) => !!stateNode.meta,
-  });
+  testModel.testCoverage();
 });

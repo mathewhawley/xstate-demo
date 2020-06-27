@@ -27,13 +27,11 @@ function Feedback() {
   return (
     <Modal onClose={() => send('CLOSE')} isOpen={state.matches('opened')} trigger={modalTrigger}>
       <ModalHeader>
-        <h2 className="ma0 fw4 lh-solid f4" data-testid="modal-heading-copy">
-          {modalHeading}
-        </h2>
+        <h2 className="ma0 fw4 lh-solid f4">{modalHeading}</h2>
       </ModalHeader>
       <ModalBody>
         {(state.matches({ opened: 'prompt' }) || state.matches({ opened: 'thanks' })) && (
-          <p className="ma0 lh-copy" data-testid="modal-body-copy">
+          <p className="ma0 lh-copy">
             Donec sed magna vel dui eleifend varius eu sit amet nisl. In placerat ornare nisl, ut
             dignissim ligula euismod quis. Etiam vestibulum purus sit amet ligula varius sodales.
             Cras vel fermentum massa, quis scelerisque ipsum. Donec arcu felis, sodales quis ligula
