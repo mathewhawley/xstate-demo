@@ -30,7 +30,7 @@ function Modal(props: Props) {
   );
 
   const panel = (
-    <div className="u-center-abs h-100 h-auto-ns w-100 pa3-ns mw7 fixed">
+    <div className="u-center-abs h-100 h-auto-ns w-100 pa3-ns mw6 fixed">
       <div
         className="br1-ns flex flex-column bg-white h-100 w-100 shadow-1"
         data-testid="modal-panel"
