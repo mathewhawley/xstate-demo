@@ -21,7 +21,7 @@ function Feedback() {
       case state.matches({ opened: 'thanks' }): {
         return 'Thanks for participating!';
       }
-      case state.matches({ opened: 'feedback' }): {
+      case state.matches({ opened: 'form' }): {
         return 'We would love to hear your feedback.';
       }
     }
@@ -29,9 +29,10 @@ function Feedback() {
 
   return (
     <Modal
-      onClickOverlay={() => send('OVERLAY')}
-      isOpen={state.matches('opened')}
       trigger={modalTrigger}
+      isOpen={state.matches('opened')}
+      onClickOverlay={() => send('OVERLAY')}
+      onKeyEsc={() => send('KEY_ESC')}
     >
       <ModalHeader>
         <h2 className="ma0 fw4 lh-solid f4">{modalHeading}</h2>
@@ -75,7 +76,7 @@ function Feedback() {
             <Button
               fullWidth
               variant="primary"
-              onClick={() => send('CLOSE')}
+              onClick={() => send('DONE')}
               qaHook="modal-btn-done"
             >
               Done
@@ -83,7 +84,7 @@ function Feedback() {
           </div>
         )}
 
-        {state.matches({ opened: 'feedback' }) && (
+        {state.matches({ opened: 'form' }) && (
           <div className="mw4-ns center">
             <Button
               fullWidth

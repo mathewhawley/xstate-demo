@@ -1,4 +1,4 @@
-import { MachineConfig } from 'xstate';
+import { MachineConfig, TransitionConfig, EventObject } from 'xstate';
 
 type FeedbackSchema = {
   states: {
@@ -7,7 +7,7 @@ type FeedbackSchema = {
       states: {
         prompt: {};
         thanks: {};
-        feedback: {};
+        form: {};
       };
     };
   };
@@ -19,8 +19,8 @@ type FeedbackContext = {
 
 type FeedbackEvent =
   | { type: 'OPEN' }
-  | { type: 'CLOSE' }
   | { type: 'OVERLAY' }
+  | { type: 'KEY_ESC' }
   | { type: 'DONE' }
   | { type: 'SUBMIT' }
   | { type: 'GOOD' }
@@ -43,16 +43,21 @@ const config: MachineConfig<FeedbackContext, FeedbackSchema, FeedbackEvent> = {
       initial: 'prompt',
       on: {
         OVERLAY: 'closed',
+        KEY_ESC: 'closed',
       },
       states: {
         prompt: {
           on: {
             GOOD: 'thanks',
-            BAD: 'feedback',
+            BAD: 'form',
           },
         },
-        thanks: {},
-        feedback: {},
+        thanks: {
+          on: {
+            DONE: '#feedback.closed',
+          },
+        },
+        form: {},
       },
     },
   },

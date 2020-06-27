@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { Machine } from 'xstate';
 import { createModel } from '@xstate/test';
 import { cleanup, render, within, RenderResult } from '@testing-library/react';
@@ -29,12 +29,13 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
       initial: 'prompt',
       on: {
         OVERLAY: 'closed',
+        KEY_ESC: 'closed',
       },
       states: {
         prompt: {
           on: {
             GOOD: 'thanks',
-            BAD: 'feedback',
+            BAD: 'form',
           },
           meta: {
             test: () => {
@@ -47,6 +48,9 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
           },
         },
         thanks: {
+          on: {
+            DONE: '#feedback.closed',
+          },
           meta: {
             test: () => {
               const { queryByText } = within(document.getElementById('modal')!);
@@ -56,7 +60,7 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
             },
           },
         },
-        feedback: {
+        form: {
           meta: {
             test: () => {
               const { queryByText } = within(document.getElementById('modal')!);
@@ -79,6 +83,9 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
 const testModel = createModel<RenderResult>(testMachine).withEvents({
   OPEN: ({ getByTestId }) => {
     fireEvent.click(getByTestId('modal-trigger'));
+  },
+  KEY_ESC: ({ baseElement }) => {
+    fireEvent.keyPress(baseElement, { key: 'Escape' });
   },
   OVERLAY: ({ getByTestId }) => {
     fireEvent.click(getByTestId('modal-overlay'));
