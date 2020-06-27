@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React from 'react';
 import { Machine } from 'xstate';
 import { createModel } from '@xstate/test';
 import { cleanup, render, within, RenderResult } from '@testing-library/react';

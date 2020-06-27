@@ -1,4 +1,4 @@
-import { MachineConfig, TransitionConfig, EventObject } from 'xstate';
+import { MachineConfig } from 'xstate';
 
 type FeedbackSchema = {
   states: {
