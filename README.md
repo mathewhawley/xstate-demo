@@ -2,6 +2,8 @@
 
 Learning exercise, rebuilding [xstate-test-demo]() repo.
 
+[Visualisation](https://xstate.js.org/viz/?gist=b5b17ecda08a4c1904c619bfd6c99ba5)
+
 Built using:
 
 - [Tachyons](https://tachyons.io/)
