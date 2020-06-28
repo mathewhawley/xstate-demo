@@ -1,3 +1,13 @@
+# xstate demo
+
+Learning exercise, rebuilding [xstate-test-demo]() repo.
+
+Built using:
+
+- [Tachyons](https://tachyons.io/)
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
+- [TypeScript](https://www.typescriptlang.org/)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
