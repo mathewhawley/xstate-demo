@@ -9,9 +9,6 @@ import type { FeedbackSchema, FeedbackEvent, FeedbackContext } from 'machines/fe
 const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
   id: 'feedback',
   initial: 'closed',
-  context: {
-    input: null,
-  },
   states: {
     closed: {
       on: {
@@ -61,8 +58,31 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
           },
         },
         form: {
+          id: 'form',
+          initial: 'clean',
           on: {
-            SUBMIT: [{ target: 'thanks', cond: (_, e) => e.payload.length > 0 }],
+            SUBMIT: [
+              { target: 'thanks', cond: (_, e) => e.payload.length > 0 },
+              { target: '.invalid' },
+            ],
+          },
+          states: {
+            clean: {
+              meta: {
+                test: () => {
+                  const { queryByText } = within(document.getElementById('modal')!);
+                  expect(queryByText('Required')).not.toBeInTheDocument();
+                },
+              },
+            },
+            invalid: {
+              meta: {
+                test: () => {
+                  const { queryByText } = within(document.getElementById('modal')!);
+                  expect(queryByText('Required')).toBeInTheDocument();
+                },
+              },
+            },
           },
           meta: {
             test: () => {

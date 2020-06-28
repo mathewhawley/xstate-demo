@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMachine } from '@xstate/react';
+import cn from 'classnames';
 import feedbackMachine from 'machines/feedback';
 import Button from 'components/Button';
 import Modal, { ModalHeader, ModalFooter, ModalBody } from 'components/Modal';
@@ -60,11 +61,17 @@ function Feedback() {
               </label>
               <textarea
                 id="feedback-input"
-                className="db border-box w-100 measure ba b--black-20 pa2 br2 mb2"
+                className={cn(
+                  'db border-box w-100 measure ba pa2 br2 mb1',
+                  state.matches({ opened: { form: 'invalid' } }) ? 'b--red bw1' : 'b--black-20'
+                )}
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
                 data-testid="feedback-input"
               />
+              {state.matches({ opened: { form: 'invalid' } }) && (
+                <span className="red f7 mt1">Required</span>
+              )}
             </form>
           )}
         </ModalBody>

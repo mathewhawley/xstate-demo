@@ -7,14 +7,15 @@ type FeedbackSchema = {
       states: {
         prompt: {};
         thanks: {};
-        form: {};
+        form: {
+          states: {
+            clean: {};
+            invalid: {};
+          };
+        };
       };
     };
   };
-};
-
-type FeedbackContext = {
-  input: string | null;
 };
 
 type FeedbackEvent =
@@ -26,12 +27,11 @@ type FeedbackEvent =
   | { type: 'GOOD' }
   | { type: 'BAD' };
 
+type FeedbackContext = {};
+
 const config: MachineConfig<FeedbackContext, FeedbackSchema, FeedbackEvent> = {
   id: 'feedback',
   initial: 'closed',
-  context: {
-    input: null,
-  },
   states: {
     closed: {
       on: {
@@ -58,8 +58,17 @@ const config: MachineConfig<FeedbackContext, FeedbackSchema, FeedbackEvent> = {
           },
         },
         form: {
+          id: 'form',
+          initial: 'clean',
           on: {
-            SUBMIT: [{ target: 'thanks', cond: (_, e) => e.payload.length > 0 }],
+            SUBMIT: [
+              { target: 'thanks', cond: (_, e) => e.payload.length > 0 },
+              { target: '.invalid' },
+            ],
+          },
+          states: {
+            clean: {},
+            invalid: {},
           },
         },
       },
@@ -67,5 +76,5 @@ const config: MachineConfig<FeedbackContext, FeedbackSchema, FeedbackEvent> = {
   },
 };
 
-export type { FeedbackSchema, FeedbackContext, FeedbackEvent };
+export type { FeedbackSchema, FeedbackEvent, FeedbackContext };
 export default config;
