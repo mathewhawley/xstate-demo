@@ -15,8 +15,8 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
         OPEN: 'opened',
       },
       meta: {
-        test: ({ queryByTestId }: RenderResult) => {
-          expect(queryByTestId('feedback-trigger')).toBeInTheDocument();
+        test: ({ getByTestId, queryByTestId }: RenderResult) => {
+          expect(getByTestId('feedback-trigger'));
           expect(queryByTestId('modal-overlay')).not.toBeInTheDocument();
         },
       },
@@ -36,11 +36,11 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
           },
           meta: {
             test: () => {
-              const { queryByText } = within(document.getElementById('modal')!);
-              expect(queryByText('How was your experience?')).toBeInTheDocument();
-              expect(queryByText('Donec sed magna vel dui', { exact: false })).toBeInTheDocument();
-              expect(queryByText('Bad')).toBeInTheDocument();
-              expect(queryByText('Good')).toBeInTheDocument();
+              const { getByText } = within(document.getElementById('modal')!);
+              expect(getByText('How was your experience?'));
+              expect(getByText('Donec sed magna vel dui', { exact: false }));
+              expect(getByText('Bad'));
+              expect(getByText('Good'));
             },
           },
         },
@@ -50,10 +50,10 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
           },
           meta: {
             test: () => {
-              const { queryByText } = within(document.getElementById('modal')!);
-              expect(queryByText('Thanks for participating!')).toBeInTheDocument();
-              expect(queryByText('Lorem ipsum dolor sit', { exact: false })).toBeInTheDocument();
-              expect(queryByText('Done')).toBeInTheDocument();
+              const { getByText } = within(document.getElementById('modal')!);
+              expect(getByText('Thanks for participating!'));
+              expect(getByText('Lorem ipsum dolor sit', { exact: false }));
+              expect(getByText('Done'));
             },
           },
         },
@@ -78,27 +78,27 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
             invalid: {
               meta: {
                 test: () => {
-                  const { queryByText } = within(document.getElementById('modal')!);
-                  expect(queryByText('Required')).toBeInTheDocument();
+                  const { getByText } = within(document.getElementById('modal')!);
+                  expect(getByText('Required'));
                 },
               },
             },
           },
           meta: {
             test: () => {
-              const { queryByText, queryByLabelText } = within(document.getElementById('modal')!);
-              expect(queryByText('We would love to hear your feedback.')).toBeInTheDocument();
-              expect(queryByLabelText('Please tell us why:')).toBeInTheDocument();
-              expect(queryByText('Submit')).toBeInTheDocument();
+              const { getByText, getByLabelText } = within(document.getElementById('modal')!);
+              expect(getByText('We would love to hear your feedback.'));
+              expect(getByLabelText('Please tell us why:'));
+              expect(getByText('Submit'));
             },
           },
         },
       },
       meta: {
         test: () => {
-          const { queryByTestId } = within(document.getElementById('modal')!);
-          expect(queryByTestId('modal-overlay')).toBeInTheDocument();
-          expect(queryByTestId('modal-panel')).toBeInTheDocument();
+          const { getByTestId } = within(document.getElementById('modal')!);
+          expect(getByTestId('modal-overlay'));
+          expect(getByTestId('modal-panel'));
         },
       },
     },
