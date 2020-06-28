@@ -47,11 +47,24 @@ function Feedback() {
             sit amet, accumsan facilisis lacus.
           </p>
         )}
+
         {state.matches({ opened: 'thanks' }) && (
           <p className="ma0 lh-copy measure center">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec orci id massa lacinia
             consectetur non non metus. Pellentesque in sem sed lacus elementum vulputate.
           </p>
+        )}
+
+        {state.matches({ opened: 'form' }) && (
+          <form>
+            <label htmlFor="feedback" className="db mb2 f6 b">
+              Please tell us why:
+            </label>
+            <textarea
+              id="feedback"
+              className="db border-box w-100 measure ba b--black-20 pa2 br2 mb2"
+            />
+          </form>
         )}
       </ModalBody>
 

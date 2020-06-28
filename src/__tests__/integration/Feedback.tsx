@@ -63,8 +63,10 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
         form: {
           meta: {
             test: () => {
-              const { queryByText } = within(document.getElementById('modal')!);
+              const { queryByText, queryByLabelText } = within(document.getElementById('modal')!);
               expect(queryByText('We would love to hear your feedback.')).toBeInTheDocument();
+              expect(queryByText('Submit')).toBeInTheDocument();
+              expect(queryByLabelText('Please tell us why:', { exact: false })).toBeInTheDocument();
             },
           },
         },

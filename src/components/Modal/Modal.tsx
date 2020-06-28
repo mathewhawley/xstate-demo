@@ -26,9 +26,9 @@ function Modal(props: Props) {
   const portal =
     ref.current &&
     ReactDOM.createPortal(
-      <Portal onClickOverlay={props.onClickOverlay} onKeyEsc={props.onKeyEsc}>
+      <Main onClickOverlay={props.onClickOverlay} onKeyEsc={props.onKeyEsc}>
         {props.children}
-      </Portal>,
+      </Main>,
       ref.current
     );
 
@@ -76,13 +76,13 @@ export function ModalFooter(props: FooterProps) {
   );
 }
 
-type PortalProps = {
+type MainProps = {
   children: React.ReactNode;
   onKeyEsc?: (e: KeyboardEvent) => void;
   onClickOverlay?: () => void;
 };
 
-function Portal(props: PortalProps) {
+function Main(props: MainProps) {
   useKeyDown('Escape', props.onKeyEsc);
 
   const overlay = (
