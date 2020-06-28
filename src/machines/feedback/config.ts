@@ -22,7 +22,7 @@ type FeedbackEvent =
   | { type: 'OVERLAY' }
   | { type: 'KEY_ESC' }
   | { type: 'DONE' }
-  | { type: 'SUBMIT' }
+  | { type: 'SUBMIT'; payload: string }
   | { type: 'GOOD' }
   | { type: 'BAD' };
 
@@ -57,7 +57,11 @@ const config: MachineConfig<FeedbackContext, FeedbackSchema, FeedbackEvent> = {
             DONE: '#feedback.closed',
           },
         },
-        form: {},
+        form: {
+          on: {
+            SUBMIT: [{ target: 'thanks', cond: (_, e) => e.payload.length > 0 }],
+          },
+        },
       },
     },
   },

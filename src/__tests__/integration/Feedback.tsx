@@ -19,7 +19,7 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
       },
       meta: {
         test: ({ queryByTestId }: RenderResult) => {
-          expect(queryByTestId('modal-trigger')).toBeInTheDocument();
+          expect(queryByTestId('feedback-trigger')).toBeInTheDocument();
           expect(queryByTestId('modal-overlay')).not.toBeInTheDocument();
         },
       },
@@ -61,12 +61,15 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
           },
         },
         form: {
+          on: {
+            SUBMIT: [{ target: 'thanks', cond: (_, e) => e.payload.length > 0 }],
+          },
           meta: {
             test: () => {
               const { queryByText, queryByLabelText } = within(document.getElementById('modal')!);
               expect(queryByText('We would love to hear your feedback.')).toBeInTheDocument();
+              expect(queryByLabelText('Please tell us why:')).toBeInTheDocument();
               expect(queryByText('Submit')).toBeInTheDocument();
-              expect(queryByLabelText('Please tell us why:', { exact: false })).toBeInTheDocument();
             },
           },
         },
@@ -84,7 +87,7 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
 
 const testModel = createModel<RenderResult>(testMachine).withEvents({
   OPEN: ({ getByTestId }) => {
-    fireEvent.click(getByTestId('modal-trigger'));
+    fireEvent.click(getByTestId('feedback-trigger'));
   },
   KEY_ESC: ({ baseElement }) => {
     fireEvent.keyPress(baseElement, { key: 'Escape' });
@@ -92,11 +95,20 @@ const testModel = createModel<RenderResult>(testMachine).withEvents({
   OVERLAY: ({ getByTestId }) => {
     fireEvent.click(getByTestId('modal-overlay'));
   },
+  SUBMIT: {
+    exec: ({ getByTestId }, e) => {
+      fireEvent.change(getByTestId('feedback-input'), {
+        target: { value: e },
+      });
+      fireEvent.click(getByTestId('feedback-btn-submit'));
+    },
+    cases: [{ payload: 'test' }, { payload: '' }],
+  },
   GOOD: ({ getByTestId }) => {
-    fireEvent.click(getByTestId('modal-btn-good'));
+    fireEvent.click(getByTestId('feedback-btn-good'));
   },
   BAD: ({ getByTestId }) => {
-    fireEvent.click(getByTestId('modal-btn-bad'));
+    fireEvent.click(getByTestId('feedback-btn-bad'));
   },
 });
 

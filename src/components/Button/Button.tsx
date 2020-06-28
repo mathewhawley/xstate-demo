@@ -17,6 +17,7 @@ type Props = {
   onClick: React.EventHandler<React.MouseEvent>;
   fullWidth?: boolean;
   qaHook?: string;
+  formId?: string;
 };
 
 function Button(props: Props) {
@@ -33,7 +34,12 @@ function Button(props: Props) {
   });
 
   return (
-    <button className={styles} onClick={props.onClick} data-testid={props.qaHook}>
+    <button
+      form={props.formId}
+      className={styles}
+      onClick={props.onClick}
+      data-testid={props.qaHook}
+    >
       {props.children}
     </button>
   );

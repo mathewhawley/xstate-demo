@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useMachine } from '@xstate/react';
 import feedbackMachine from 'machines/feedback';
 import Button from 'components/Button';
@@ -6,9 +6,10 @@ import Modal, { ModalHeader, ModalFooter, ModalBody } from 'components/Modal';
 
 function Feedback() {
   const [state, send] = useMachine(feedbackMachine);
+  const [feedback, setFeedback] = useState('');
 
   const modalTrigger = (
-    <Button variant="primary" onClick={() => send('OPEN')} qaHook="modal-trigger">
+    <Button variant="primary" onClick={() => send('OPEN')} qaHook="feedback-trigger">
       Open
     </Button>
   );
@@ -57,12 +58,15 @@ function Feedback() {
 
         {state.matches({ opened: 'form' }) && (
           <form>
-            <label htmlFor="feedback" className="db mb2 f6 b">
+            <label htmlFor="feedback-input" className="db mb2 f6 b">
               Please tell us why:
             </label>
             <textarea
-              id="feedback"
+              id="feedback-input"
               className="db border-box w-100 measure ba b--black-20 pa2 br2 mb2"
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
+              data-testid="feedback-input"
             />
           </form>
         )}
@@ -72,12 +76,22 @@ function Feedback() {
         {state.matches({ opened: 'prompt' }) && (
           <div className="mw5-ns center">
             <div className="fl w-50 pr2">
-              <Button fullWidth variant="error" onClick={() => send('BAD')} qaHook="modal-btn-bad">
+              <Button
+                fullWidth
+                variant="error"
+                onClick={() => send('BAD')}
+                qaHook="feedback-btn-bad"
+              >
                 Bad
               </Button>
             </div>
             <div className="fl w-50 pl2">
-              <Button fullWidth variant="new" onClick={() => send('GOOD')} qaHook="modal-btn-good">
+              <Button
+                fullWidth
+                variant="new"
+                onClick={() => send('GOOD')}
+                qaHook="feedback-btn-good"
+              >
                 Good
               </Button>
             </div>
@@ -90,7 +104,7 @@ function Feedback() {
               fullWidth
               variant="primary"
               onClick={() => send('DONE')}
-              qaHook="modal-btn-done"
+              qaHook="feedback-btn-done"
             >
               Done
             </Button>
@@ -102,8 +116,8 @@ function Feedback() {
             <Button
               fullWidth
               variant="primary"
-              onClick={() => send('SUBMIT')}
-              qaHook="modal-btn-submit"
+              onClick={() => send({ type: 'SUBMIT', payload: feedback })}
+              qaHook="feedback-btn-submit"
             >
               Submit
             </Button>
