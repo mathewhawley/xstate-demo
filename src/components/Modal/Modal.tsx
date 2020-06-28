@@ -80,33 +80,25 @@ type MainProps = {
 function Main(props: MainProps) {
   useKeyDown('Escape', props.onKeyEsc);
 
-  const overlay = (
-    <div
-      className="fixed top-0 left-0 right-0 bottom-0 o-70 bg-black"
-      onClick={() => {
-        if (props.onClickOverlay) {
-          props.onClickOverlay();
-        }
-      }}
-      data-testid="modal-overlay"
-    />
-  );
-
-  const panel = (
-    <div className="u-center-abs h-100 h-auto-ns w-100 pa3-ns mw6 fixed">
-      <div
-        className="br1-ns flex flex-column bg-white h-100 w-100 shadow-1"
-        data-testid="modal-panel"
-      >
-        {props.children}
-      </div>
-    </div>
-  );
-
   return (
     <>
-      {overlay}
-      {panel}
+      <div
+        className="fixed top-0 left-0 right-0 bottom-0 o-70 bg-black"
+        onClick={() => {
+          if (props.onClickOverlay) {
+            props.onClickOverlay();
+          }
+        }}
+        data-testid="modal-overlay"
+      />
+      <div className="u-center-abs h-100 h-auto-ns w-100 pa3-ns mw6 fixed">
+        <div
+          className="br1-ns flex flex-column bg-white h-100 w-100 shadow-1"
+          data-testid="modal-panel"
+        >
+          {props.children}
+        </div>
+      </div>
     </>
   );
 }
