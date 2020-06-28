@@ -6,12 +6,12 @@ import useKeyDown from 'hooks/useKeyDown';
 const PORTAL_ID = 'modal';
 
 type Props = {
-  trigger: React.ReactElement;
   children?: React.ReactNode;
   onClickOverlay?: () => void;
   onKeyEsc?: (e: KeyboardEvent) => void;
   isOpen?: boolean;
   onOpen?: () => void;
+  portalId?: string;
 };
 
 function Modal(props: Props) {
@@ -20,23 +20,18 @@ function Modal(props: Props) {
   useBodyScrollLock(props.isOpen);
 
   useEffect(() => {
-    ref.current = document.getElementById(PORTAL_ID);
-  }, []);
+    ref.current = document.getElementById(props.portalId || PORTAL_ID);
+  }, [props.portalId]);
 
-  const portal =
-    ref.current &&
-    ReactDOM.createPortal(
-      <Main onClickOverlay={props.onClickOverlay} onKeyEsc={props.onKeyEsc}>
-        {props.children}
-      </Main>,
-      ref.current
-    );
+  if (!props.isOpen || ref.current === null) {
+    return null;
+  }
 
-  return (
-    <>
-      {props.trigger}
-      {props.isOpen && portal}
-    </>
+  return ReactDOM.createPortal(
+    <Main onClickOverlay={props.onClickOverlay} onKeyEsc={props.onKeyEsc}>
+      {props.children}
+    </Main>,
+    ref.current
   );
 }
 
