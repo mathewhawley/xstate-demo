@@ -62,7 +62,7 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
           initial: 'clean',
           on: {
             SUBMIT: [
-              { target: '.submitted', cond: (_, e) => e.value.length > 0 },
+              { target: '.submitted', cond: (_, e) => e.value.trim().length > 0 },
               { target: '.invalid' },
             ],
           },
@@ -121,13 +121,13 @@ const testModel = createModel<RenderResult>(testMachine).withEvents({
     fireEvent.click(getByTestId('modal-overlay'));
   },
   SUBMIT: {
-    exec: async ({ getByTestId }, e) => {
+    exec: ({ getByTestId }, e) => {
       fireEvent.change(getByTestId('feedback-input'), {
-        target: { value: e },
+        target: { value: e.value },
       });
       fireEvent.click(getByTestId('feedback-btn-submit'));
     },
-    cases: [{ value: '' }, { value: 'a' }],
+    cases: [{ value: 'a' }, { value: '' }],
   },
   GOOD: ({ getByTestId }) => {
     fireEvent.click(getByTestId('feedback-btn-good'));
@@ -164,5 +164,7 @@ testPlans.forEach((plan) => {
 });
 
 it('coverage', () => {
-  testModel.testCoverage();
+  testModel.testCoverage({
+    filter: (stateNode) => !!stateNode.meta,
+  });
 });

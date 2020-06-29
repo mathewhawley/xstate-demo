@@ -62,7 +62,7 @@ const config: MachineConfig<FeedbackContext, FeedbackSchema, FeedbackEvent> = {
           initial: 'clean',
           on: {
             SUBMIT: [
-              { target: '.submitted', cond: (_, e) => e.value.length > 0 },
+              { target: '.submitted', cond: (_, e) => e.value.trim().length > 0 },
               { target: '.invalid' },
             ],
           },
