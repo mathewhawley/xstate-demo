@@ -120,7 +120,7 @@ function Feedback() {
               <Button
                 fullWidth
                 variant="primary"
-                onClick={() => send({ type: 'SUBMIT', payload: feedback })}
+                onClick={() => send({ type: 'SUBMIT', value: feedback })}
                 qaHook="feedback-btn-submit"
               >
                 Submit

@@ -10,6 +10,7 @@ type FeedbackSchema = {
         form: {
           states: {
             clean: {};
+            submitted: {};
             invalid: {};
           };
         };
@@ -23,7 +24,7 @@ type FeedbackEvent =
   | { type: 'OVERLAY' }
   | { type: 'KEY_ESC' }
   | { type: 'DONE' }
-  | { type: 'SUBMIT'; payload: string }
+  | { type: 'SUBMIT'; value: string }
   | { type: 'GOOD' }
   | { type: 'BAD' };
 
@@ -58,17 +59,21 @@ const config: MachineConfig<FeedbackContext, FeedbackSchema, FeedbackEvent> = {
           },
         },
         form: {
-          id: 'form',
           initial: 'clean',
           on: {
             SUBMIT: [
-              { target: 'thanks', cond: (_, e) => e.payload.length > 0 },
+              { target: '.submitted', cond: (_, e) => e.value.length > 0 },
               { target: '.invalid' },
             ],
           },
           states: {
             clean: {},
             invalid: {},
+            submitted: {
+              on: {
+                '': '#opened.thanks',
+              },
+            },
           },
         },
       },

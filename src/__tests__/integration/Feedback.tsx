@@ -18,6 +18,7 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
         test: ({ getByTestId, queryByTestId }: RenderResult) => {
           expect(getByTestId('feedback-trigger'));
           expect(queryByTestId('modal-overlay')).not.toBeInTheDocument();
+          expect(queryByTestId('modal-panel')).not.toBeInTheDocument();
         },
       },
     },
@@ -58,11 +59,10 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
           },
         },
         form: {
-          id: 'form',
           initial: 'clean',
           on: {
             SUBMIT: [
-              { target: 'thanks', cond: (_, e) => e.payload.length > 0 },
+              { target: '.submitted', cond: (_, e) => e.value.length > 0 },
               { target: '.invalid' },
             ],
           },
@@ -81,6 +81,11 @@ const testMachine = Machine<FeedbackContext, FeedbackSchema, FeedbackEvent>({
                   const { getByText } = within(document.getElementById('modal')!);
                   expect(getByText('Required'));
                 },
+              },
+            },
+            submitted: {
+              on: {
+                '': '#opened.thanks',
               },
             },
           },
@@ -116,13 +121,13 @@ const testModel = createModel<RenderResult>(testMachine).withEvents({
     fireEvent.click(getByTestId('modal-overlay'));
   },
   SUBMIT: {
-    exec: ({ getByTestId }, e) => {
+    exec: async ({ getByTestId }, e) => {
       fireEvent.change(getByTestId('feedback-input'), {
         target: { value: e },
       });
       fireEvent.click(getByTestId('feedback-btn-submit'));
     },
-    cases: [{ payload: 'test' }, { payload: '' }],
+    cases: [{ value: '' }, { value: 'a' }],
   },
   GOOD: ({ getByTestId }) => {
     fireEvent.click(getByTestId('feedback-btn-good'));
