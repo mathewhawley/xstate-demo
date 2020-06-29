@@ -121,7 +121,7 @@ const testModel = createModel<RenderResult>(testMachine).withEvents({
     fireEvent.click(getByTestId('modal-overlay'));
   },
   SUBMIT: {
-    exec: ({ getByTestId }, e) => {
+    exec: ({ getByTestId }, e: any) => {
       fireEvent.change(getByTestId('feedback-input'), {
         target: { value: e.value },
       });
