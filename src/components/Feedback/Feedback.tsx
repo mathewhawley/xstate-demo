@@ -5,8 +5,6 @@ import feedbackMachine from 'machines/feedback';
 import Button from 'components/Button';
 import Modal, { ModalHeader, ModalFooter, ModalBody } from 'components/Modal';
 
-console.log('test');
-
 function Feedback() {
   const [state, send] = useMachine(feedbackMachine);
   const [feedback, setFeedback] = useState('');
